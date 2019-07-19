@@ -7,6 +7,11 @@ defaults1: &defaults1
     working_directory: /home/circleci/workspace
     docker:
       - image: golang
+defaults2: &defaults2
+    working_directory: /home/circleci/workspace
+    docker:
+      - image: kramos/alpine-zip
+
 
 
 jobs:
@@ -38,7 +43,15 @@ jobs:
                  cd ./weather/faas
                  go get github.com/aws/aws-lambda-go/lambda
                  GOOS=linux go build -o faas main.go
-
+   terraform-zip:
+     <<: *defaults2
+     steps:
+        - checkout
+        - run: 
+            name: Writing a Lambda function in Go is quite similar
+            command: |
+                 cd ./weather/faas
+                 zip faas.zip faas
    terraform-go1:
      <<: *defaults
      steps:
@@ -54,7 +67,6 @@ jobs:
             name: Writing a Lambda function in Go is quite similar
             command: |
                  cd ./weather/faas
-                 zip faas.zip faas
                  aws s3 cp faas.zip s3://12345-artifact-bucket/
    terraform-lambda:
      <<: *defaults
@@ -119,9 +131,12 @@ workflows:
          - terraform-go:
              requires:
                  - terraform-s3
-         - terraform-go1:
+         - terraform-zip:
              requires:
                  - terraform-go
+         - terraform-go1:
+             requires:
+                 - terraform-zip
          - terraform-lambda:
              requires:
                  - terraform-go1
