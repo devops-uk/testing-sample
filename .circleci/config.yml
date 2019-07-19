@@ -2,7 +2,13 @@ version: 2.1
 defaults: &defaults
     working_directory: /home/circleci/workspace
     docker:
-      - image: thirupathip/terraform-aws:go
+      - image: thirupathip/terraform-aws:kb
+defaults: &defaults1
+    working_directory: /home/circleci/workspace
+    docker:
+      - image: golang
+      - image: thirupathip/terraform-aws:kb
+
 
 jobs:
    terraform-s3:
@@ -24,7 +30,7 @@ jobs:
                  terraform plan
                  terraform apply -auto-approve
    terraform-go:
-     <<: *defaults
+     <<: *defaults1
      steps:
         - checkout
         - run:
