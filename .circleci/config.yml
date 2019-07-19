@@ -35,6 +35,7 @@ jobs:
                  terraform apply -auto-approve
    terraform-go:
      <<: *defaults1
+     <<: *defaults2
      steps:
         - checkout
         - run: 
@@ -43,15 +44,20 @@ jobs:
                  cd ./weather/faas
                  go get github.com/aws/aws-lambda-go/lambda
                  GOOS=linux go build -o faas main.go
-   terraform-zip:
-     <<: *defaults2
-     steps:
-        - checkout
         - run: 
             name: Writing a Lambda function in Go is quite similar
             command: |
                  cd ./weather/faas
-                 zip faas.zip faas
+                 zip faas.zip faas         
+  #  terraform-zip:
+  #    <<: *defaults2
+  #    steps:
+  #       - checkout
+  #       - run: 
+  #           name: Writing a Lambda function in Go is quite similar
+  #           command: |
+  #                cd ./weather/faas
+  #                zip faas.zip faas
    terraform-go1:
      <<: *defaults
      steps:
@@ -131,12 +137,12 @@ workflows:
          - terraform-go:
              requires:
                  - terraform-s3
-         - terraform-zip:
-             requires:
-                 - terraform-go
+        #  - terraform-zip:
+        #      requires:
+        #          - terraform-go
          - terraform-go1:
              requires:
-                 - terraform-zip
+                 - terraform-go
          - terraform-lambda:
              requires:
                  - terraform-go1
