@@ -3,7 +3,7 @@ defaults: &defaults
     working_directory: /home/circleci/workspace
     docker:
       - image: thirupathip/terraform-aws:kb
-defaults: &defaults1
+defaults1: &defaults1
     working_directory: /home/circleci/workspace
     docker:
       - image: golang
