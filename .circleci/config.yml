@@ -35,7 +35,6 @@ jobs:
                  terraform apply -auto-approve
    terraform-go:
      <<: *defaults1
-     <<: *defaults2
      steps:
         - checkout
         - run: 
@@ -44,6 +43,9 @@ jobs:
                  cd ./weather/faas
                  go get github.com/aws/aws-lambda-go/lambda
                  GOOS=linux go build -o faas main.go
+     steps:
+        <<: *defaults2
+        - checkout            
         - run: 
             name: Writing a Lambda function in Go is quite similar
             command: |
