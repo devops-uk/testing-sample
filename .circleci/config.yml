@@ -3,15 +3,19 @@ defaults: &defaults
     working_directory: /home/circleci/workspace
     docker:
       - image: thirupathip/terraform-aws:go
-      - command: |
-             aws configure set aws_region ${AWS_DEFAULT_REGION}
-             aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
-             aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
-      - command: chmod -R 770 /home/circleci/
+
 jobs:
    terraform-s3:
      <<: *defaults
      steps:
+        - checkout
+        - run:
+            name: Configure
+            command: |
+              aws configure set aws_region ${AWS_DEFAULT_REGION}
+              aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+              aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+              chmod -R 770 /home/circleci/
         - run: 
             name: S3 Creation using terraform
             command: |
@@ -22,6 +26,14 @@ jobs:
    terraform-go:
      <<: *defaults
      steps:
+        - checkout
+        - run:
+            name: Configure
+            command: |
+              aws configure set aws_region ${AWS_DEFAULT_REGION}
+              aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+              aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+              chmod -R 770 /home/circleci/
         - run: 
             name: Writing a Lambda function in Go is quite similar
             command: |
@@ -32,7 +44,15 @@ jobs:
                  aws s3 cp faas.zip s3://{my-artifact-s3-bucket-url}/
    terraform-lambda:
      <<: *defaults
-     steps: 
+     steps:
+        - checkout  
+        - run:
+            name: Configure
+            command: |
+              aws configure set aws_region ${AWS_DEFAULT_REGION}
+              aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+              aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+              chmod -R 770 /home/circleci/
         - run: 
             name: creating the API Gateway and Lambda!
             command: |
@@ -43,6 +63,14 @@ jobs:
    terraform-web:
      <<: *defaults
      steps:
+        - checkout 
+        - run:
+            name: Configure
+            command: |
+              aws configure set aws_region ${AWS_DEFAULT_REGION}
+              aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+              aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+              chmod -R 770 /home/circleci/
         - run: 
             name: The html part is pretty basic
             command: |
@@ -52,6 +80,14 @@ jobs:
    terraform-destroy:
      <<: *defaults
      steps:
+        - checkout         
+        - run:
+            name: Configure
+            command: |
+              aws configure set aws_region ${AWS_DEFAULT_REGION}
+              aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+              aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+              chmod -R 770 /home/circleci/
         - run: 
             name: Destroy terraform
             command: |
@@ -64,7 +100,6 @@ workflows:
     version: 2
     terraform-list-out:
       jobs:
-         - checkout 
          - terraform-s3
          - terraform-go:
              requires:
