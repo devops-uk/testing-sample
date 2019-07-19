@@ -118,9 +118,12 @@ workflows:
          - terraform-go:
              requires:
                  - terraform-s3
-         - terraform-lambda:
+         - terraform-go1:
              requires:
                  - terraform-go
+         - terraform-lambda:
+             requires:
+                 - terraform-go1
          - terraform-web:
              requires:
                  - terraform-lambda
