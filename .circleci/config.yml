@@ -38,7 +38,7 @@ jobs:
                  cd ./weather/faas
                  go get github.com/aws/aws-lambda-go/lambda
                  GOOS=linux go build -o faas main.go
-                 zip faas.zip faas
+
    terraform-go1:
      <<: *defaults
      steps:
@@ -54,6 +54,7 @@ jobs:
             name: Writing a Lambda function in Go is quite similar
             command: |
                  cd ./weather/faas
+                 zip faas.zip faas
                  aws s3 cp faas.zip s3://12345-artifact-bucket/
    terraform-lambda:
      <<: *defaults
