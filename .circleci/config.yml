@@ -2,7 +2,7 @@ version: 2.1
 defaults: &defaults
     working_directory: /home/circleci/workspace
     docker:
-      - image: thirupathip/terraform-aws:kb
+      - image: thirupathip/terraform-aws:ubuntu
 defaults1: &defaults1
     working_directory: /home/circleci/workspace
     docker:
