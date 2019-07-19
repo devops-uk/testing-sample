@@ -92,11 +92,10 @@ jobs:
 workflows:
     version: 2
     terraform-list-out:
-      steps:
-         - checkout
-         - run:
-            name: Configure
-            command: |
+      checkout
+      run:
+          name: Configure
+          command: |
               aws configure set aws_region ${AWS_DEFAULT_REGION}
               aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
               aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
